@@ -28,9 +28,19 @@ public class PartidaDeXadrez { // ChessMatch
 	}
 	
 	private void initialSetup() { // método responsável por iniciar a partida de Xadrez, colocando as peças no tabuleiro.
-		novaPosicaoPeca('b', 6, new Torre(tabuleiro, Cores.BRANCO));
-		novaPosicaoPeca('e', 8, new Rei(tabuleiro, Cores.PRETO));
-		novaPosicaoPeca('e', 1, new Rei(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('c', 1, new Torre(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('c', 2, new Torre(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('d', 2, new Torre(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('e', 2, new Torre(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('e', 1, new Torre(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('d', 1, new Rei(tabuleiro, Cores.BRANCO));
+
+		novaPosicaoPeca('c', 7, new Torre(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('c', 8, new Torre(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('d', 7, new Torre(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('e', 7, new Torre(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('e', 8, new Torre(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('d', 8, new Rei(tabuleiro, Cores.PRETO));
 	}
 
 }
