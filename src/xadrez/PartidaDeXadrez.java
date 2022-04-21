@@ -1,6 +1,5 @@
 package xadrez;
 
-import boardgame.Posicao;
 import boardgame.Tabuleiro;
 import xadrez.pecas.Rei;
 import xadrez.pecas.Torre;
@@ -24,10 +23,14 @@ public class PartidaDeXadrez { // ChessMatch
 		return mat;
 	}
 	
+	private void novaPosicaoPeca(char coluna, int linha, PecaDeXadrez peca) {
+		tabuleiro.posicaoPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
+	}
+	
 	private void initialSetup() { // método responsável por iniciar a partida de Xadrez, colocando as peças no tabuleiro.
-		tabuleiro.posicaoPeca(new Torre(tabuleiro, Cores.BRANCO), new Posicao(2,1));
-		tabuleiro.posicaoPeca(new Rei(tabuleiro, Cores.PRETO), new Posicao(0,4));
-		tabuleiro.posicaoPeca(new Rei(tabuleiro, Cores.BRANCO), new Posicao(7,4));
+		novaPosicaoPeca('b', 6, new Torre(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('e', 8, new Rei(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('e', 1, new Rei(tabuleiro, Cores.BRANCO));
 	}
 
 }
