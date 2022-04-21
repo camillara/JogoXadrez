@@ -4,9 +4,9 @@ public class Peca {
 	protected Posicao posicao;
 	private Tabuleiro tabuleiro;
 
-	public Peca(Tabuleiro tabuleiro) {
+	public Peca(Tabuleiro tabuleiro) { //Piece
 		this.tabuleiro = tabuleiro;
-		posicao = null;
+
 	}
 
 	protected Tabuleiro getTabuleiro() {
