@@ -45,6 +45,19 @@ public class Tabuleiro { //Board
 		peca.posicao=posicao;
 	}
 	
+	public Peca removerPeca(Posicao posicao) {
+		if(!posicaoExiste(posicao)) {
+			throw new TabuleiroException("Posição informada não existe.");
+		}
+		if(peca(posicao)== null) {
+			return null;
+		}
+		Peca aux = peca(posicao);
+		aux.posicao = null;
+		pecas[posicao.getLinha()][posicao.getColuna()] = null;
+		return aux;
+	}
+	
 	private boolean posicaoExiste(int linha, int coluna) { // testa valores válidos para linhas e colunas
 		return linha >=0 && linha< linhas && coluna>=0 && coluna<colunas;
 	}
@@ -59,5 +72,7 @@ public class Tabuleiro { //Board
 		}
 		return peca(posicao)!=null;		
 	}
+	
+	
 
 }
