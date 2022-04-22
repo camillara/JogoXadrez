@@ -15,4 +15,10 @@ public class Rei extends PecaDeXadrez{
 		return "K"; //Rei = King
 	}
 
+	@Override
+	public boolean[][] movimentosPossiveis() {
+		boolean [][] mat = new boolean [getTabuleiro().getLinhas()][getTabuleiro().getColunas()];
+		return mat;
+	}
+
 }
