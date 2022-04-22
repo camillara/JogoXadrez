@@ -25,10 +25,16 @@ public class PartidaDeXadrez { // ChessMatch
 		return mat;
 	}
 	
+	public boolean [][] movimentosPossiveis(PosicaoXadrez posicaoOrigem){
+		Posicao posicao = posicaoOrigem.toPosicao();
+		validadePosicaoOrigem(posicao);
+		return tabuleiro.peca(posicao).movimentosPossiveis();		
+	}	
+	
 	public PecaDeXadrez movimentoPeca(PosicaoXadrez  posicaoOrigem, PosicaoXadrez posicaoDestino) {
 		Posicao origem = posicaoOrigem.toPosicao();
 		Posicao destino = posicaoDestino.toPosicao();
-		ValidadePosicaoOrigem(origem);
+		validadePosicaoOrigem(origem);
 		validadePosicaoDestino(origem, destino);
 		Peca pecaCapturada = makeMove(origem, destino);
 		return (PecaDeXadrez) pecaCapturada;
@@ -42,7 +48,7 @@ public class PartidaDeXadrez { // ChessMatch
 		return pecaCapturada;
 	}
 	
-	private void ValidadePosicaoOrigem (Posicao posicao) {
+	private void validadePosicaoOrigem (Posicao posicao) {
 		if (!tabuleiro.temPeca(posicao)) {
 			throw new XadrezExceptions("Não existe peça na posição de origem.");
 		}
