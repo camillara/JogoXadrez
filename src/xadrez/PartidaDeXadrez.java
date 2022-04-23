@@ -10,6 +10,7 @@ import boardgame.Tabuleiro;
 import xadrez.pecas.Bispo;
 import xadrez.pecas.Cavalo;
 import xadrez.pecas.Peao;
+import xadrez.pecas.Rainha;
 import xadrez.pecas.Rei;
 import xadrez.pecas.Torre;
 
@@ -198,7 +199,7 @@ public class PartidaDeXadrez { // ChessMatch
 		novaPosicaoPeca('a', 1, new Torre(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('b', 1, new Cavalo(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('c', 1, new Bispo(tabuleiro, Cores.BRANCO));
-
+		novaPosicaoPeca('d', 1, new Rainha(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('e', 1, new Rei(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('f', 1, new Bispo(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('g', 1, new Cavalo(tabuleiro, Cores.BRANCO));
@@ -215,7 +216,7 @@ public class PartidaDeXadrez { // ChessMatch
 		novaPosicaoPeca('a', 8, new Torre(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('b', 8, new Cavalo(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('c', 8, new Bispo(tabuleiro, Cores.PRETO));
-		
+		novaPosicaoPeca('d', 8, new Rainha(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('e', 8, new Rei(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('g', 8, new Cavalo(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('h', 8, new Torre(tabuleiro, Cores.PRETO));
