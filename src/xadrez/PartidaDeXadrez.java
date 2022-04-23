@@ -2,6 +2,7 @@ package xadrez;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import boardgame.Peca;
 import boardgame.Posicao;
@@ -14,6 +15,7 @@ public class PartidaDeXadrez { // ChessMatch
 	private int turn;
 	private Cores jogadorAtivo;
 	private Tabuleiro tabuleiro;
+	private boolean check;
 	
 	private List<Peca> pecasTabuleiro = new ArrayList<>();
 	private List<Peca> pecasCapturadas = new ArrayList<>();
@@ -32,6 +34,10 @@ public class PartidaDeXadrez { // ChessMatch
 	
 	public Cores getJogadorAtivo() {
 		return jogadorAtivo;
+	}
+	
+	public boolean getCheck() {
+		return check;
 	}
 
 	public PecaDeXadrez[][] getPecas() {
@@ -56,6 +62,14 @@ public class PartidaDeXadrez { // ChessMatch
 		validadePosicaoOrigem(origem);
 		validadePosicaoDestino(origem, destino);
 		Peca pecaCapturada = makeMove(origem, destino);
+		
+		if(testaCheck(jogadorAtivo)) {
+			undoMove(origem, destino, pecaCapturada);
+			throw new XadrezExceptions("Você não pode se colocar em xeque!");
+		}
+		
+		check = (testaCheck(oponente(jogadorAtivo))) ? true : false; // vai verificar se a após a jogada o oponente está em check.
+		
 		nextTurn();
 		return (PecaDeXadrez) pecaCapturada;
 		
@@ -70,6 +84,16 @@ public class PartidaDeXadrez { // ChessMatch
 		}
 		tabuleiro.posicaoPeca(p, destino);
 		return pecaCapturada;
+	}
+	
+	private void undoMove(Posicao origem, Posicao destino, Peca pecaCapturada) { // desfazer o movimento caso o último movimento deixe o rei em Xeque Mate.
+		Peca p = tabuleiro.removerPeca(destino);
+		tabuleiro.posicaoPeca(p, origem);
+		if(pecaCapturada!=null) {
+			tabuleiro.posicaoPeca(pecaCapturada, destino);
+			pecasCapturadas.remove(pecaCapturada);
+			pecasTabuleiro.add(pecaCapturada);	
+		}
 	}
 	
 	private void validadePosicaoOrigem (Posicao posicao) {
@@ -93,6 +117,33 @@ public class PartidaDeXadrez { // ChessMatch
 	private void nextTurn() {
 		turn++;
 		jogadorAtivo = (jogadorAtivo == Cores.BRANCO) ? Cores.PRETO :  Cores.BRANCO;
+	}
+	
+	private Cores oponente(Cores cor) {
+		return (cor == Cores.BRANCO) ? Cores.PRETO : Cores.BRANCO;
+	}
+	
+	private PecaDeXadrez rei (Cores cor) { // ver a cor da peça do REI
+		List <Peca> lista = pecasTabuleiro.stream().filter(x->((PecaDeXadrez)x).getCor()==cor).collect(Collectors.toList());
+		for(Peca p : lista) {
+			if(p instanceof Rei) {
+				return (PecaDeXadrez) p;
+			}
+		}
+		throw new IllegalStateException("Não existe o rei da cor " + cor + "no tabuleiro.");
+	}
+	
+	private boolean testaCheck(Cores cor) {
+		Posicao posicaoRei = rei(cor).getPosicaoXadrez().toPosicao();
+		//peças do tabuleiro filtrada pelas cores do concorrente.
+		List <Peca> pecasOponente = pecasTabuleiro.stream().filter(x->((PecaDeXadrez)x).getCor()==oponente(cor)).collect(Collectors.toList());
+		for (Peca p : pecasOponente) { //ver se o movimento de alguma peça da lista de oponentes coloca o rei em check.
+			boolean [][] mat = p.movimentosPossiveis();
+			if(mat[posicaoRei.getLinha()][posicaoRei.getColuna()]) {
+				return true; // retorna verdadeiro se o o Rei estiver em xeque.
+			}
+		}
+		return false; // retorna falso, significa que o Rei não está em xeque.
 	}
 	
 	private void novaPosicaoPeca(char coluna, int linha, PecaDeXadrez peca) {
