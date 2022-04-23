@@ -16,6 +16,7 @@ public class PartidaDeXadrez { // ChessMatch
 	private Cores jogadorAtivo;
 	private Tabuleiro tabuleiro;
 	private boolean check;
+	private boolean checkMate;
 	
 	private List<Peca> pecasTabuleiro = new ArrayList<>();
 	private List<Peca> pecasCapturadas = new ArrayList<>();
@@ -38,6 +39,10 @@ public class PartidaDeXadrez { // ChessMatch
 	
 	public boolean getCheck() {
 		return check;
+	}
+	
+	public boolean getCheckMate() {
+		return checkMate;
 	}
 
 	public PecaDeXadrez[][] getPecas() {
@@ -69,8 +74,13 @@ public class PartidaDeXadrez { // ChessMatch
 		}
 		
 		check = (testaCheck(oponente(jogadorAtivo))) ? true : false; // vai verificar se a após a jogada o oponente está em check.
-		
-		nextTurn();
+
+		if(testaCheckMate(oponente(jogadorAtivo))) {
+			checkMate = true;
+		}
+		else {			
+			nextTurn();
+		}
 		return (PecaDeXadrez) pecaCapturada;
 		
 	}
@@ -120,7 +130,7 @@ public class PartidaDeXadrez { // ChessMatch
 	}
 	
 	private Cores oponente(Cores cor) {
-		return (cor == Cores.BRANCO) ? Cores.PRETO : Cores.BRANCO;
+		return (cor == Cores.BRANCO) ? Cores.PRETO : Cores.BRANCO; //muda a cor para ser a vez do oponente.
 	}
 	
 	private PecaDeXadrez rei (Cores cor) { // ver a cor da peça do REI
@@ -146,25 +156,44 @@ public class PartidaDeXadrez { // ChessMatch
 		return false; // retorna falso, significa que o Rei não está em xeque.
 	}
 	
+	private boolean testaCheckMate(Cores cor) {
+		if(!testaCheck(cor)) {
+			return false;
+		}
+		//lista de peças do tabuleiro filtradas pela cor do argumento.
+		List <Peca> lista = pecasTabuleiro.stream().filter(x->((PecaDeXadrez)x).getCor()==cor).collect(Collectors.toList());
+		for (Peca p : lista) {
+			boolean [][] mat = p.movimentosPossiveis();
+			for(int i=0; i<tabuleiro.getLinhas(); i++) {
+				for(int j=0; j<tabuleiro.getColunas(); j++) {
+					if(mat[i][j]) {
+						Posicao origem = ((PecaDeXadrez)p).getPosicaoXadrez().toPosicao();
+						Posicao destino = new Posicao(i,j);
+						Peca pecaCapturada = makeMove(origem, destino);
+						boolean testCheck = testaCheck(cor);
+						undoMove(origem, destino, pecaCapturada);
+						if(!testCheck) {
+							return false; //Rei não está em check mate
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
 	private void novaPosicaoPeca(char coluna, int linha, PecaDeXadrez peca) {
 		tabuleiro.posicaoPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
 		pecasTabuleiro.add(peca);
 	}
 	
 	private void initialSetup() { // método responsável por iniciar a partida de Xadrez, colocando as peças no tabuleiro.
-		novaPosicaoPeca('c', 1, new Torre(tabuleiro, Cores.BRANCO));
-		novaPosicaoPeca('c', 2, new Torre(tabuleiro, Cores.BRANCO));
-		novaPosicaoPeca('d', 2, new Torre(tabuleiro, Cores.BRANCO));
-		novaPosicaoPeca('e', 2, new Torre(tabuleiro, Cores.BRANCO));
-		novaPosicaoPeca('e', 1, new Torre(tabuleiro, Cores.BRANCO));
-		novaPosicaoPeca('d', 1, new Rei(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('h', 7, new Torre(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('d', 1, new Torre(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('e', 1, new Rei(tabuleiro, Cores.BRANCO));
 
-		novaPosicaoPeca('c', 7, new Torre(tabuleiro, Cores.PRETO));
-		novaPosicaoPeca('c', 8, new Torre(tabuleiro, Cores.PRETO));
-		novaPosicaoPeca('d', 7, new Torre(tabuleiro, Cores.PRETO));
-		novaPosicaoPeca('e', 7, new Torre(tabuleiro, Cores.PRETO));
-		novaPosicaoPeca('e', 8, new Torre(tabuleiro, Cores.PRETO));
-		novaPosicaoPeca('d', 8, new Rei(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('b', 8, new Torre(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('a', 8, new Rei(tabuleiro, Cores.PRETO));
 	}
 
 }
