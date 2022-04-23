@@ -86,19 +86,23 @@ public class PartidaDeXadrez { // ChessMatch
 	}
 	
 	private Peca makeMove(Posicao origem, Posicao destino) {
-		Peca p = tabuleiro.removerPeca(origem);
+		PecaDeXadrez p = (PecaDeXadrez)tabuleiro.removerPeca(origem);
+		p.incrementarMovimentos();
 		Peca pecaCapturada = tabuleiro.removerPeca(destino);
+		tabuleiro.posicaoPeca(p, destino);
 		if(pecaCapturada!=null) {
 			pecasTabuleiro.remove(pecaCapturada);
 			pecasCapturadas.add(pecaCapturada);			
 		}
-		tabuleiro.posicaoPeca(p, destino);
+
 		return pecaCapturada;
 	}
 	
 	private void undoMove(Posicao origem, Posicao destino, Peca pecaCapturada) { // desfazer o movimento caso o último movimento deixe o rei em Xeque Mate.
-		Peca p = tabuleiro.removerPeca(destino);
+		PecaDeXadrez p = (PecaDeXadrez) tabuleiro.removerPeca(destino);
+		p.decrementarMovimentos();
 		tabuleiro.posicaoPeca(p, origem);
+		
 		if(pecaCapturada!=null) {
 			tabuleiro.posicaoPeca(pecaCapturada, destino);
 			pecasCapturadas.remove(pecaCapturada);
