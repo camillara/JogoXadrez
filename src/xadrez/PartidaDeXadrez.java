@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import boardgame.Peca;
 import boardgame.Posicao;
 import boardgame.Tabuleiro;
+import xadrez.pecas.Bispo;
 import xadrez.pecas.Peao;
 import xadrez.pecas.Rei;
 import xadrez.pecas.Torre;
@@ -196,6 +197,8 @@ public class PartidaDeXadrez { // ChessMatch
 		novaPosicaoPeca('a', 1, new Torre(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('h', 1, new Torre(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('e', 1, new Rei(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('c', 1, new Bispo(tabuleiro, Cores.BRANCO));
+		novaPosicaoPeca('f', 1, new Bispo(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('a', 2, new Peao(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('b', 2, new Peao(tabuleiro, Cores.BRANCO));
 		novaPosicaoPeca('c', 2, new Peao(tabuleiro, Cores.BRANCO));
@@ -208,6 +211,8 @@ public class PartidaDeXadrez { // ChessMatch
 		novaPosicaoPeca('a', 8, new Torre(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('h', 8, new Torre(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('e', 8, new Rei(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('c', 8, new Bispo(tabuleiro, Cores.PRETO));
+		novaPosicaoPeca('f', 8, new Bispo(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('a', 7, new Peao(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('b', 7, new Peao(tabuleiro, Cores.PRETO));
 		novaPosicaoPeca('c', 7, new Peao(tabuleiro, Cores.PRETO));
