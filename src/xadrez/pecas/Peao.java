@@ -3,13 +3,16 @@ package xadrez.pecas;
 import boardgame.Posicao;
 import boardgame.Tabuleiro;
 import xadrez.Cores;
+import xadrez.PartidaDeXadrez;
 import xadrez.PecaDeXadrez;
 
 public class Peao extends PecaDeXadrez{
+	
+	private PartidaDeXadrez partida;
 
-	public Peao(Tabuleiro tabuleiro, Cores cor) {
+	public Peao(Tabuleiro tabuleiro, Cores cor, PartidaDeXadrez partida) {
 		super(tabuleiro, cor);
-		
+		this.partida=partida;
 	}
 	
 	@Override
@@ -19,7 +22,7 @@ public class Peao extends PecaDeXadrez{
 
 	@Override
 	public boolean[][] movimentosPossiveis() {
-boolean [][] mat = new boolean [getTabuleiro().getLinhas()][getTabuleiro().getColunas()];
+		boolean [][] mat = new boolean [getTabuleiro().getLinhas()][getTabuleiro().getColunas()];
 		
 		Posicao p = new Posicao(0,0);
 		
@@ -47,7 +50,20 @@ boolean [][] mat = new boolean [getTabuleiro().getLinhas()][getTabuleiro().getCo
 			p.setValores(posicao.getLinha()-1, posicao.getColuna()+1); //uma posicao na linha acima, na mesma coluna
 			if(getTabuleiro().posicaoExiste(p) && temPecasOponetes(p)) { // verificar se existe a linha acima/direita e se tem peça de do oponente.
 				mat [p.getLinha()][p.getColuna()] = true;
-			}			
+			}
+			
+			//#movimento especial enPassante BRANCAS
+			if(posicao.getLinha()==3) {
+				Posicao esquerda = new Posicao(posicao.getLinha(), posicao.getColuna()-1);
+				if(getTabuleiro().posicaoExiste(esquerda) && temPecasOponetes(esquerda)&& getTabuleiro().peca(esquerda)==partida.getenPassante()) {
+					mat [esquerda.getLinha()-1][esquerda.getColuna()] = true;
+				}
+				Posicao direita = new Posicao(posicao.getLinha(), posicao.getColuna()+1);
+				if(getTabuleiro().posicaoExiste(direita) && temPecasOponetes(direita)&& getTabuleiro().peca(direita)==partida.getenPassante()) {
+					mat [direita.getLinha()-1][direita.getColuna()] = true;
+				}
+			}
+
 		}
 		else {
 			p.setValores(posicao.getLinha()+1, posicao.getColuna()); //uma posicao na linha acima, na mesma coluna
@@ -73,6 +89,18 @@ boolean [][] mat = new boolean [getTabuleiro().getLinhas()][getTabuleiro().getCo
 			p.setValores(posicao.getLinha()+1, posicao.getColuna()+1); //uma posicao na linha acima, na mesma coluna
 			if(getTabuleiro().posicaoExiste(p) && temPecasOponetes(p)) { // verificar se existe a linha acima/direita e se tem peça de do oponente.
 				mat [p.getLinha()][p.getColuna()] = true;
+			}
+			
+			//#movimento especial enPassante PRETAS
+			if(posicao.getLinha()==4) {
+				Posicao esquerda = new Posicao(posicao.getLinha(), posicao.getColuna()-1);
+				if(getTabuleiro().posicaoExiste(esquerda) && temPecasOponetes(esquerda)&& getTabuleiro().peca(esquerda)==partida.getenPassante()) {
+					mat [esquerda.getLinha()+1][esquerda.getColuna()] = true;
+				}
+				Posicao direita = new Posicao(posicao.getLinha(), posicao.getColuna()+1);
+				if(getTabuleiro().posicaoExiste(direita) && temPecasOponetes(direita)&& getTabuleiro().peca(direita)==partida.getenPassante()) {
+					mat [direita.getLinha()+1][direita.getColuna()] = true;
+				}
 			}
 		}
 		
