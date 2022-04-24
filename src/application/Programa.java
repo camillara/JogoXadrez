@@ -42,6 +42,10 @@ public class Programa {
 				if(partida.getPromocao()!=null) {
 					System.out.print("Informe a peça para promoção (B/N/R/Q): ");
 					String tipo = sc.nextLine().toUpperCase();
+					while(!tipo.equals("B") && !tipo.equals("N") && !tipo.equals("R") && !tipo.equals("Q")) {
+						System.out.print("Valor inválido! Informe a peça para promoção (B/N/R/Q): ");
+						tipo = sc.nextLine().toUpperCase();
+					}
 					partida.replacePromocaoPeca(tipo);
 				}
 			}
